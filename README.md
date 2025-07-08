@@ -1,6 +1,4 @@
-Absolutely — here's the updated and professional `README.md` with **Fluir** as the project name, replacing all previous mentions of "Stream." The tone remains clear, convincing, and tailored to highlight **vesting**, **real-time value distribution**, and **Core DAO** alignment.
 
----
 
 # Fluir Smart Contract
 
