@@ -5,17 +5,17 @@
 > “Money should move as seamlessly as information. Real-time streaming of value unlocks use cases we haven’t even imagined yet.”
 > — **Vitalik Buterin**, Co-founder of Ethereum
 
-**Fluir** is a real-time token distribution protocol built for the Core DAO ecosystem. It allows DAOs, protocols, teams, and contributors to manage vesting, payroll, and incentive flows with on-chain precision — without relying on manual operations or trust assumptions.
+**Fluir** is a real-time token distribution protocol built for the Core DAO ecosystem. It allows DAOs, protocols, teams, and contributors to manage vesting, payroll, and incentive flows with on-chain precision  without relying on manual operations or trust assumptions.
 
 ---
 
 ## Why Core DAO Needs Fluir
 
-Core DAO offers speed and decentralization — but builders still face fragmented tools for **token vesting**, **grants**, and **payroll**. Teams often rely on spreadsheets, off-chain agreements, or custodial wallets to handle value distribution.
+Core DAO offers speed and decentralization  but builders still face fragmented tools for **token vesting**, **grants**, and **payroll**. Teams often rely on spreadsheets, off-chain agreements, or custodial wallets to handle value distribution.
 
 **Fluir solves this with on-chain streaming.**
 
-Whether you're vesting tokens to team members, rewarding DAO contributors, or managing multi-party payouts, Fluir allows for controlled and transparent capital flows — backed entirely by smart contracts.
+Whether you're vesting tokens to team members, rewarding DAO contributors, or managing multi-party payouts, Fluir allows for controlled and transparent capital flows backed entirely by smart contracts.
 
 ---
 
