@@ -5,42 +5,55 @@
 > “Money should move as seamlessly as information. Real-time streaming of value unlocks use cases we haven’t even imagined yet.”
 > — **Vitalik Buterin**, Co-founder of Ethereum
 
-**Fluir** is a real-time token distribution protocol deployed on **Core DAO**, enabling trustless, continuous, and flexible value transfer. Built for DAOs, teams, and protocols, Fluir transforms how tokens are vested, earned, and distributed on-chain.
+**Fluir** is a real-time token distribution protocol built for the Core DAO ecosystem. It allows DAOs, protocols, teams, and contributors to manage vesting, payroll, and incentive flows with on-chain precision — without relying on manual operations or trust assumptions.
 
 ---
 
 ## Why Core DAO Needs Fluir
 
-Core DAO provides speed and decentralization, but teams still rely on spreadsheets, manual approvals, or custodial tools to release vested tokens and pay contributors.
+Core DAO offers speed and decentralization — but builders still face fragmented tools for **token vesting**, **grants**, and **payroll**. Teams often rely on spreadsheets, off-chain agreements, or custodial wallets to handle value distribution.
 
-**Fluir changes that.**
+**Fluir solves this with on-chain streaming.**
 
-It offers an on-chain infrastructure for **automated token vesting**, contributor payments, grants, and more — all in real time. With Fluir, value flows according to transparent rules, eliminating ambiguity, delays, and misaligned incentives.
-
-Fluir is Core’s missing financial layer for trustless capital distribution.
+Whether you're vesting tokens to team members, rewarding DAO contributors, or managing multi-party payouts, Fluir allows for controlled and transparent capital flows — backed entirely by smart contracts.
 
 ---
 
-## What Fluir Enables
+## Payroll, Built Natively for Web3
 
-* Token vesting with cliffs and linear unlocks
-* Real-time value distribution to contributors, DAOs, investors
-* Stream control: pause, resume, extend, terminate
-* Batch execution for scalable token operations
-* Update recipients mid-stream without disrupting logic
-* Transparent flow of capital, visible and enforceable on-chain
+**Payroll in crypto is broken** — with delays, mismatched wallets, and manual payouts.
+
+Fluir introduces an on-chain payroll infrastructure where:
+
+* Contributors get paid continuously
+* Teams can pause, resume, or terminate based on performance
+* Wallets can be updated without interrupting payments
+* DAOs can scale operations using batched flows
+* Every stream is visible, verifiable, and enforceable on-chain
 
 ---
 
-## Vesting Infrastructure Built In
+## Vesting with Cliff Logic
 
-Vesting is foundational to every serious Web3 protocol. Fluir introduces:
+Vesting is a core mechanism for long-term alignment. Fluir supports:
 
-* **Cliffs** — Lock value until a defined start period
-* **Intervals** — Gradual, continuous release across time
-* **Accountability** — Ability to pause or terminate streams
-* **Flexibility** — Update recipient, extend duration, settle balances
-* **Transparency** — No hidden unlocks, everything lives on-chain
+* **Cliff release at `startTime`**: The defined cliff amount becomes available exactly at stream start
+* **Interval-based distribution**: Remaining tokens stream over time based on your configuration
+* **On-chain transparency**: Unlock logic and balances are fully visible
+* **Stream control**: Pause, resume, extend, or close a vesting agreement at any time
+* **Recipient updates**: Change wallet ownership mid-vesting without disruption
+
+---
+
+## What Fluir Offers
+
+* Token distribution flows with full lifecycle control
+* Real-time, on-chain settlement without middlemen
+* Role-based access for senders and recipients
+* On-chain updates for recipient address
+* Batch-friendly design for DAOs and large teams
+* Pausable, resumable, and extendable streams
+* Termination logic to settle remaining balances
 
 ---
 
@@ -55,97 +68,72 @@ constructor(
 )
 ```
 
-Deploys Fluir with the necessary Core DAO-compatible configuration.
+Deploys the core Fluir contract with administrative configuration.
 
 ---
 
-## Core Functions
+## Stream Lifecycle Functions
 
-| Function                                          | Description                                  |
+| Function                                          | Purpose                                      |
 | ------------------------------------------------- | -------------------------------------------- |
-| `initializeFlow()` / `bulkCreateFlow()`           | Create a stream or multiple                  |
-| `claimFromFlow()` / `bulkClaimFromFlow()`         | Claim unlocked balance                       |
-| `prolongFlow()` / `bulkExtendFlow()`              | Extend end date of a stream                  |
-| `haltFlow()` / `restartFlow()`                    | Pause or resume ongoing stream               |
-| `terminateFlow()` / `bulkTerminateFlow()`         | End stream and settle balances               |
-| `updateBeneficiary()` / `bulkUpdateBeneficiary()` | Assign new recipient                         |
-| `availableFunds()`                                | View available funds for sender or recipient |
+| `initializeFlow()` / `bulkCreateFlow()`           | Create one or many token streams             |
+| `claimFromFlow()` / `bulkClaimFromFlow()`         | Withdraw unlocked balance                    |
+| `prolongFlow()` / `bulkExtendFlow()`              | Extend the end time of a stream              |
+| `haltFlow()` / `restartFlow()`                    | Pause and resume an active stream            |
+| `terminateFlow()` / `bulkTerminateFlow()`         | Settle and close a stream                    |
+| `updateBeneficiary()` / `bulkUpdateBeneficiary()` | Change recipient address                     |
+| `availableFunds()`                                | View current balance for sender or recipient |
 
 ---
 
-## Fee Structure
+## Admin Configuration
 
-* **Per-token streaming fee**: Set by owner, in basis points
-* **Auto-withdraw fee**: Fixed at `0.005 ETH`
-* **Fee recipient**: Platform wallet to fund treasury or ecosystem growth
+* `updateFeeCollector(address)`
+* `updateAutoClaimAccount(address)`
+* `configureGateway(address)`
+* `registerAsset(address token)`
+* `bulkRegisterAsset(address[] tokens)`
 
-Only approved tokens can be streamed via Fluir.
-
-```solidity
-registerAsset(address token, uint256 feeRate)
-bulkRegisterAsset(address[] tokens, uint256[] feeRates)
-```
-
----
-
-## Admin Controls
-
-* `updateFeeCollector(address)` — Set new fee receiver
-* `updateAutoClaimAccount(address)` — Change auto-withdraw wallet
-* `configureGateway(address)` — Integrate off-chain or L2 logic
-* `registerAsset()` / `bulkRegisterAsset()` — Add tokens and set streaming fees
-
----
-
-## Technical Overview
-
-* Modular Solidity architecture: `CreateLogic`, `ExtendLogic`, `WithdrawLogic`
-* Secure by design: uses OpenZeppelin’s `SafeERC20`, `Ownable`, `ReentrancyGuard`
-* Clean separation of stream state: handled via `Struct.sol`
-* Interface exposed through `IStream.sol` for easy integration
+> These functions allow the Fluir contract to stay extensible and adaptable across Core DAO tooling.
 
 ---
 
 ## Subgraph Integration
 
-Track real-time flows, pauses, updates, and claims via The Graph:
+Monitor streams and lifecycle events using The Graph:
 
 **Subgraph Playground**
 [https://thegraph.com/hosted-service/subgraph/YOUR\_NAME/fluir-coredao](https://thegraph.com/hosted-service/subgraph/YOUR_NAME/fluir-coredao)
-
-*Replace with your actual subgraph path.*
 
 ---
 
 ## Use Cases
 
-* Token vesting for teams, advisors, and investors
-* Continuous contributor rewards for DAO operations
-* Ecosystem grant disbursement without trust assumptions
-* Escrow-like financial contracts governed on-chain
-* Royalty and licensing payments to creators or service providers
+* Token vesting for Core DAO teams, investors, and advisors
+* Contributor payroll for DAOs and decentralized orgs
+* Real-time disbursement of ecosystem grants
+* Royalties or service-based continuous payments
+* Escrow-like contracts with settlement logic
+* Internal team compensation with full traceability
 
 ---
 
-## Testing Suggestions
+## Deployment on Core DAO
 
-* Simulate a 12-month vesting stream with a 3-month cliff
-* Pause a stream and resume after delay — check time sync
-* Update the recipient and verify uninterrupted payout
-* Batch create and terminate 100+ flows for scalability
-* Validate token fee accuracy and auto-withdraw balance return
+Fluir is live on **Core DAO**, enabling fair, transparent, and real-time capital distribution. By replacing manual payouts with stream-based automation, Fluir helps Core builders:
 
----
+* Vest tokens responsibly
+* Pay contributors reliably
+* Distribute capital trustlessly
+* Build long-term incentives directly into code
 
-## Live on Core DAO
-
-Fluir is now live on Core — bringing modern capital flows to one of the most decentralized and secure EVM networks.
-
-It’s built for serious builders who want to unlock fair, flexible, and transparent token distribution — from day one to scale.
+Fluir is the financial rail for modern DAOs and decentralized teams — delivering capital at the speed of trust.
 
 ---
 
 ## License
 
 Licensed under **AGPL-3.0**.
+
+---
 
