@@ -127,7 +127,7 @@ Fluir is live on **Core DAO**, enabling fair, transparent, and real-time capital
 * Distribute capital trustlessly
 * Build long-term incentives directly into code
 
-Fluir is the financial rail for modern DAOs and decentralized teams — delivering capital at the speed of trust.
+Fluir is the financial rail for modern DAOs and decentralized teams  delivering capital at the speed of trust.
 
 ---
 
