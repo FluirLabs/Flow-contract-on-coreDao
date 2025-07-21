@@ -1,0 +1,938 @@
+[
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "owner_",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "weth_",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "feeRecipient_",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "autoWithdrawAccount_",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "streamId",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "operator",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "senderBalance",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "recipientBalance",
+        "type": "uint256"
+      }
+    ],
+    "name": "CloseStream",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "previousOwner",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
+    ],
+    "name": "OwnershipTransferred",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "streamId",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "operator",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "recipientBalance",
+        "type": "uint256"
+      }
+    ],
+    "name": "PauseStream",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "streamId",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "operator",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "duration",
+        "type": "uint256"
+      }
+    ],
+    "name": "ResumeStream",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "streamId",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "operator",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "newRecipient",
+        "type": "address"
+      }
+    ],
+    "name": "SetNewRecipient",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "tokenAddress",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "feeRate",
+        "type": "uint256"
+      }
+    ],
+    "name": "TokenRegister",
+    "type": "event"
+  },
+  {
+    "inputs": [],
+    "name": "GATEWAY",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "WETH",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "autoWithdrawAccount",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "autoWithdrawFeeForOnce",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "pure",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "streamId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "who",
+        "type": "address"
+      }
+    ],
+    "name": "availableFunds",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "balance",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256[]",
+        "name": "streamIds",
+        "type": "uint256[]"
+      }
+    ],
+    "name": "bulkClaimFromFlow",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "sender",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "recipient",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "deposit",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "tokenAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "startTime",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "stopTime",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "interval",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "cliffAmount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "cliffTime",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "autoWithdrawInterval",
+            "type": "uint256"
+          },
+          {
+            "internalType": "bool",
+            "name": "autoWithdraw",
+            "type": "bool"
+          },
+          {
+            "internalType": "enum Struct.Capability",
+            "name": "pauseable",
+            "type": "uint8"
+          },
+          {
+            "internalType": "enum Struct.Capability",
+            "name": "closeable",
+            "type": "uint8"
+          },
+          {
+            "internalType": "enum Struct.Capability",
+            "name": "recipientModifiable",
+            "type": "uint8"
+          }
+        ],
+        "internalType": "struct Struct.initializeStreamParams[]",
+        "name": "createParams",
+        "type": "tuple[]"
+      }
+    ],
+    "name": "bulkCreateFlow",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256[]",
+        "name": "streamIds",
+        "type": "uint256[]"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "stopTime",
+        "type": "uint256[]"
+      }
+    ],
+    "name": "bulkExtendFlow",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256[]",
+        "name": "streamIds",
+        "type": "uint256[]"
+      }
+    ],
+    "name": "bulkHaltFlow",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address[]",
+        "name": "tokenAddresses",
+        "type": "address[]"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "feeRates",
+        "type": "uint256[]"
+      }
+    ],
+    "name": "bulkRegisterAsset",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256[]",
+        "name": "streamIds",
+        "type": "uint256[]"
+      }
+    ],
+    "name": "bulkRestartFlow",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256[]",
+        "name": "streamIds",
+        "type": "uint256[]"
+      }
+    ],
+    "name": "bulkTerminateFlow",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256[]",
+        "name": "streamIds",
+        "type": "uint256[]"
+      },
+      {
+        "internalType": "address[]",
+        "name": "newRecipient",
+        "type": "address[]"
+      }
+    ],
+    "name": "bulkUpdateBeneficiary",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "streamId",
+        "type": "uint256"
+      }
+    ],
+    "name": "claimFromFlow",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "gateway",
+        "type": "address"
+      }
+    ],
+    "name": "configureGateway",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "feeRecipient",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "streamId",
+        "type": "uint256"
+      }
+    ],
+    "name": "getStream",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "onBehalfOf",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "sender",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "recipient",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "deposit",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "tokenAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "startTime",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "stopTime",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "interval",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "ratePerInterval",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "remainingBalance",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "lastWithdrawTime",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "createAt",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "autoWithdrawInterval",
+            "type": "uint256"
+          },
+          {
+            "internalType": "bool",
+            "name": "autoWithdraw",
+            "type": "bool"
+          },
+          {
+            "internalType": "bool",
+            "name": "closed",
+            "type": "bool"
+          },
+          {
+            "internalType": "bool",
+            "name": "isEntity",
+            "type": "bool"
+          },
+          {
+            "components": [
+              {
+                "internalType": "uint256",
+                "name": "cliffAmount",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "cliffTime",
+                "type": "uint256"
+              },
+              {
+                "internalType": "bool",
+                "name": "cliffDone",
+                "type": "bool"
+              }
+            ],
+            "internalType": "struct Struct.CliffInfo",
+            "name": "cliffInfo",
+            "type": "tuple"
+          },
+          {
+            "components": [
+              {
+                "internalType": "enum Struct.Capability",
+                "name": "pauseable",
+                "type": "uint8"
+              },
+              {
+                "internalType": "enum Struct.Capability",
+                "name": "closeable",
+                "type": "uint8"
+              },
+              {
+                "internalType": "enum Struct.Capability",
+                "name": "recipientModifiable",
+                "type": "uint8"
+              }
+            ],
+            "internalType": "struct Struct.FeatureInfo",
+            "name": "featureInfo",
+            "type": "tuple"
+          },
+          {
+            "components": [
+              {
+                "internalType": "uint256",
+                "name": "pauseAt",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "accPauseTime",
+                "type": "uint256"
+              },
+              {
+                "internalType": "address",
+                "name": "pauseBy",
+                "type": "address"
+              },
+              {
+                "internalType": "bool",
+                "name": "isPaused",
+                "type": "bool"
+              }
+            ],
+            "internalType": "struct Struct.PauseInfo",
+            "name": "pauseInfo",
+            "type": "tuple"
+          }
+        ],
+        "internalType": "struct Struct.Stream",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "streamId",
+        "type": "uint256"
+      }
+    ],
+    "name": "haltFlow",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "sender",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "recipient",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "deposit",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "tokenAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "startTime",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "stopTime",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "interval",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "cliffAmount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "cliffTime",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "autoWithdrawInterval",
+            "type": "uint256"
+          },
+          {
+            "internalType": "bool",
+            "name": "autoWithdraw",
+            "type": "bool"
+          },
+          {
+            "internalType": "enum Struct.Capability",
+            "name": "pauseable",
+            "type": "uint8"
+          },
+          {
+            "internalType": "enum Struct.Capability",
+            "name": "closeable",
+            "type": "uint8"
+          },
+          {
+            "internalType": "enum Struct.Capability",
+            "name": "recipientModifiable",
+            "type": "uint8"
+          }
+        ],
+        "internalType": "struct Struct.initializeStreamParams",
+        "name": "createParams",
+        "type": "tuple"
+      }
+    ],
+    "name": "initializeFlow",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "nextStreamId",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "owner",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "streamId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "stopTime",
+        "type": "uint256"
+      }
+    ],
+    "name": "prolongFlow",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "tokenAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "feeRate",
+        "type": "uint256"
+      }
+    ],
+    "name": "registerAsset",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "renounceOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "streamId",
+        "type": "uint256"
+      }
+    ],
+    "name": "restartFlow",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "streamId",
+        "type": "uint256"
+      }
+    ],
+    "name": "terminateFlow",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "streamId",
+        "type": "uint256"
+      }
+    ],
+    "name": "timeElapsed",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "delta",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "tokenAddress",
+        "type": "address"
+      }
+    ],
+    "name": "tokenFeeRate",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
+    ],
+    "name": "transferOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "newAutoWithdrawAccount",
+        "type": "address"
+      }
+    ],
+    "name": "updateAutoClaimAccount",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "streamId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "newRecipient",
+        "type": "address"
+      }
+    ],
+    "name": "updateBeneficiary",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "newFeeRecipient",
+        "type": "address"
+      }
+    ],
+    "name": "updateFeeCollector",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  }
+]

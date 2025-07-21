@@ -1,0 +1,47 @@
+specVersion: 0.0.4
+schema:
+  file: schema.graphql
+dataSources:
+  - kind: ethereum
+    name: Stream
+    network: core
+    source:
+      address: "0x874A2a1e236AFf44c2eC84Cc9c79655f82BF61DC"
+      startBlock: 27097086
+      abi: Stream
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - vestingStreamList
+        - StreamRecipient
+        - StreamSender
+        - StreamOperator
+        - StreamOperationLog
+        - TokenRegister
+        - TokenRegisterLog
+      abis:
+        - name: Stream
+          file: Stream/Stream.json
+        - name: ERC20
+          file: Stream/ERC20.json
+      eventHandlers:
+        - event: initializeStream(indexed uint256,indexed address,indexed
+            address,uint256,address,uint256,uint256,uint256,uint256,uint256,uint256,bool,uint8,uint8,uint8)
+          handler: handleCreate
+        - event: ExtendFlow(indexed uint256,indexed address,uint256,uint256)
+          handler: handleExtend
+        - event: WithdrawFromFlow(indexed uint256,indexed address,uint256)
+          handler: handleWithdraw
+        - event: CloseStream(indexed uint256,indexed address,uint256,uint256)
+          handler: handleClose
+        - event: PauseStream(indexed uint256,indexed address,uint256)
+          handler: handlePause
+        - event: ResumeStream(indexed uint256,indexed address,uint256)
+          handler: handleResume
+        - event: SetNewRecipient(indexed uint256,indexed address,indexed address)
+          handler: handleSetNewRecipient
+        - event: TokenRegister(indexed address,uint256)
+          handler: handleTokenRegister
+      file: Stream/Stream.wasm

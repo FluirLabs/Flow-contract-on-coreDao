@@ -1,0 +1,86 @@
+type vestingStreamList @entity {
+  id: ID!
+  deposit: BigDecimal!
+  startTime: BigInt!
+  stopTime: BigInt!
+  interval: BigInt!
+  cliffAmount: BigDecimal!
+  cliffTime: BigInt!
+  autoWithdrawInterval: BigInt!
+  ratePerInterval: BigDecimal!
+  withdrawnBalance: BigDecimal!
+  feeBalance: BigDecimal!
+  remainingBalance: BigDecimal!
+  lastWithdrawTime: BigInt!
+  createAt: BigInt!
+  createTxHash: Bytes # Add this line to store the transaction hash (optional for backward compatibility)
+  pauseAt: BigInt!
+  pauseBy: Bytes!
+  accPauseTime: BigInt!
+  autoWithdraw: Boolean!
+  closed: Boolean!
+  isPaused: Boolean!
+  cliffDone: Boolean!
+  pauseable: String!
+  closeable: String!
+  recipientModifiable: String!
+  token: TokenRegister!
+  recipient: StreamRecipient!
+  sender: StreamSender!
+  operations: [StreamOperationLog!]! @derivedFrom(field: "stream")
+}
+
+type StreamOperationLog @entity {
+  id: ID!
+  type: String!
+  operator: StreamOperator!
+  timestamp: BigInt!
+  sender: StreamSender!
+  recipient: StreamRecipient!
+  stream: vestingStreamList!
+  withdrawAmount: BigDecimal
+  feeAmount: BigDecimal
+  depositeAmount: BigDecimal
+  rebackAmount: BigDecimal
+  pausedDuration: BigInt
+  newRecipient: StreamRecipient
+}
+
+type StreamRecipient @entity {
+  id: ID!
+  streams: [vestingStreamList!]! @derivedFrom(field: "recipient")
+  operations: [StreamOperationLog!]! @derivedFrom(field: "recipient")
+}
+
+type StreamSender @entity {
+  id: ID!
+  streams: [vestingStreamList!]! @derivedFrom(field: "sender")
+  operations: [StreamOperationLog!]! @derivedFrom(field: "sender")
+}
+
+type StreamOperator @entity {
+  id: ID!
+  operations: [StreamOperationLog!]! @derivedFrom(field: "operator")
+}
+
+type TokenRegister @entity {
+  id: ID!
+  name: String!
+  symbol: String!
+  decimals: BigInt!
+  feeRate: BigDecimal!
+  depositeBalance: BigDecimal!
+  withdrawnBalance: BigDecimal!
+  feeBalance: BigDecimal!
+  rebackBalance: BigDecimal!
+  remainingBalance: BigDecimal!
+  streams: [vestingStreamList!]! @derivedFrom(field: "token")
+  logs: [TokenRegisterLog!]! @derivedFrom(field: "token")
+}
+
+type TokenRegisterLog @entity {
+  id: ID!
+  timestamp: BigInt!
+  feeRate: BigDecimal!
+  token: TokenRegister!
+}

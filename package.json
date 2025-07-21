@@ -1,0 +1,29 @@
+{
+  "name": "hardhat-project",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-ethers": "^3.0.5",
+    "@nomicfoundation/hardhat-foundry": "^1.1.2",
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "@types/node": "^22.12.0",
+    "ethers": "^6.9.0",
+    "hardhat": "^2.22.15",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.3"
+  },
+  "scripts": {
+    "test": "npx hardhat test",
+    "compile": "npx hardhat compile",
+    "coverage": "npx hardhat coverage",
+    "gas-test": "REPORT_GAS=true npx hardhat test",
+    "verify": "npx hardhat verify",
+    "deploy": "hardhat run deploy/deploy.js"
+  },
+  "dependencies": {
+    "@graphprotocol/graph-ts": "^0.38.0",
+    "@nomicfoundation/hardhat-verify": "^2.0.12",
+    "@openzeppelin/contracts": "^4.9.6",
+    "@typechain/hardhat": "^9.1.0",
+    "dotenv": "^16.4.5",
+    "hardhat-deploy": "^0.14.0"
+  }
+}
