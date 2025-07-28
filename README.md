@@ -107,16 +107,6 @@ Monitor streams and lifecycle events using The Graph:
 
 ---
 
-## Use Cases
-
-* Token vesting for projects building on Core DAO, including investors, contributors, and advisors
-* Contributor payroll for DAOs and decentralized orgs
-* Real-time disbursement of ecosystem grants
-* Royalties or service-based continuous payments
-* Escrow-like contracts with settlement logic
-* Internal team compensation with full traceability
-
----
 
 ## Deployment on Core DAO
 
